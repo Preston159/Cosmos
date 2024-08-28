@@ -50,7 +50,7 @@ namespace Cosmos.Debug.Kernel.Plugs.Asm
     public static void DoBochsBreak() { }
 
     [Inline]
-    public static void SendKernelPanic(uint id)
+    public static void DoSendKernelPanic(uint id)
     {
       new LiteralAssemblerCode("%ifdef DEBUGSTUB");
       new LiteralAssemblerCode("push dword [EBP + 8]");

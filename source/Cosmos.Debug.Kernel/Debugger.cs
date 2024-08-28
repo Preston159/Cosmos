@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Cosmos.Debug.Kernel
 {
@@ -157,7 +158,15 @@ namespace Cosmos.Debug.Kernel
         /// <summary>
         /// Sends a kernel panic error code to connected debugging hosts.
         /// </summary>
-        public static void SendKernelPanic(uint id) { }
+        public static void SendKernelPanic(uint id, [CallerFilePath] string filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            DoSend($"Kernel panic 0x{id:X}");
+            DoSend($"File path: {filePath}");
+            DoSend($"Line number: {lineNumber}");
+            DoSendKernelPanic(id);
+        }
+
+        public static void DoSendKernelPanic(uint id) { }
 
         /// <summary>
         /// Sends the given string to connected debugging hosts.
