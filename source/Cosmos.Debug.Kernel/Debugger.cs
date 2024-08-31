@@ -40,6 +40,11 @@ namespace Cosmos.Debug.Kernel
     public class Debugger
     {
         /// <summary>
+        /// If set, gets kernel panic information before system halts.
+        /// </summary>
+        public static IKernelPanicHandler KernelPanicHandler { get; set; }
+
+        /// <summary>
         /// Creates a new instance of the <see cref="Debugger"/> class.
         /// </summary>
         /// <param name="ring">The virtual compile-time ring the debugger is operating in.</param>
@@ -160,6 +165,7 @@ namespace Cosmos.Debug.Kernel
         /// </summary>
         public static void SendKernelPanic(uint id, [CallerFilePath] string filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
+            KernelPanicHandler?.Handle(id, filePath, lineNumber);
             DoSend($"Kernel panic 0x{id:X}");
             DoSend($"File path: {filePath}");
             DoSend($"Line number: {lineNumber}");
